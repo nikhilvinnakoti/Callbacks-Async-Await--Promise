@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+         
+     var people = {}
+     var gender = ["Male","Female"]
+     var agedata = Math.floor(Math.random()*50);
+     var genderdata = Math.floor(Math.random()*2);
+     people.age = agedata;
+     people.gender = gender[genderdata];
+     console.log(people);
+     //Using cb
+     function agecalculate(cb){
+         setTimeout(function() {
+             if(agedata>="18") {
+                 cb(null,"Yes its is allowed")
+             }
+             else{
+                 cb("Its not allowed",null)
+             }
+           },1000);   
+     }
+     function gendercheck(cb){
+         setTimeout(function() {
+             if(people.gender=="Male") {
+                 cb(null,"Yes its is allowed")
+             }
+             else{
+                 cb("Its not allowed",null)
+             }
+           },2000);   
+     }
+     agecalculate(function(err,response){
+         if (err) throw err;
+         console.log(response)
+         gendercheck(function(err,gresponse){
+             if (err) throw err;
+             console.log(gresponse);
+         });
+     });
+     //using promise
+     function agecalculate(){
+         return new Promise(function(resolve,reject){
+         setTimeout(function() {
+             if(agedata>="18") {
+                 resolve("Yes its is allowed")
+             }
+             else{
+                 reject("Its not allowed")
+             }
+           },1000);
+        });   
+     }
+     function gendercheck(){
+         return new Promise(function(resolve,reject){
+         setTimeout(function() {
+             if(people.gender=="Male") {
+                 resolve("Yes its is allowed")
+             }
+             else{
+                 reject("Its not allowed")
+             }
+           },2000);  
+        }) 
+     }
+     agecalculate()
+     .then(function(agedperson){
+         console.log(agedperson)
+         return (gendercheck())
+     })
+     .then(function(genderperson){
+         console.log(genderperson)
+     })
+     .catch(function(err){
+         console.error(err)
+     })
+
+     async function blockingfun(){
+         var mydata = await fetch("https://restcountries.eu/rest/v2/all")
+         var data = await mydata.json()
+         console.log(data)
+     }
+     blockingfun()
+    
+     
+    
+    
+
+
+         
+  
+        
+         
+
+
+
+
+
+
+    </script>
+</body>
+</html>
